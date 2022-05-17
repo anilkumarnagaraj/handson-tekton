@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: python-task
+spec:
+  params:
+    - name: firstname
+      description: pipeline temp name
+  steps:
+    - name: python-print
+      image: ibmcom/pipeline-base-image
+      workingDir: /artifacts
+      env:
+        - name: CONFIG_NAME
+          value: $(params.firstname)
+      # command: ["/usr/bin/env", "python3"]
+      script: |
+        echo "Hello.."
+        echo $(params.firstname)

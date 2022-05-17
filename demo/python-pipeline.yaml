@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: python-pipeline
+spec:
+  params:
+    - name: firstname
+      description: pipeline temp name
+      default: AAK
+  tasks:
+    - name: pipeline-python-task
+      taskRef:
+        name: python-task
+      params:
+        - name: firstname
+          value: $(params.firstname)
+      

@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: event-listener
+spec:
+  triggers:
+    - binding:
+        name: trigger-binding
+      template:
+        name: trigger-template
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: trigger-binding
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: trigger-template
+spec: 
+  params:
+    - name: firstname
+      description: pipeline temp name
+      default: AAK
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1alpha1
+      kind: PipelineRun
+      metadata:
+        name: pipelinerun-$(uid)
+      spec:
+        pipelineRef:
+          name: python-pipeline
+        params:
+          - name: firstname
+            value: $(params.firstname)
